@@ -20,11 +20,6 @@ In This Project, we are Developing and Deploying a video streaming application o
 
 * `EC2` for Deployment
 
-Clone this Repository
-
-```elixir
-git clone https://github.com/NotHarshhaa/DevOps-Projects.git
-```
 
 # **Project Architecture**
 
@@ -34,7 +29,8 @@ git clone https://github.com/NotHarshhaa/DevOps-Projects.git
 
 * Create a Repository
 
-![](https://miro.medium.com/v2/resize:fit:802/1*9hontpTywG4GrV3p6xprYQ.png)
+![Screenshot (517)](https://github.com/user-attachments/assets/07cf7fe6-efb3-4849-a3cf-9e1e7e16735b)
+
 
 # **Create IAM User:**
 
@@ -44,52 +40,38 @@ git clone https://github.com/NotHarshhaa/DevOps-Projects.git
 
 * Add Permission for full access to CodeCommit.
 
-![](https://miro.medium.com/v2/resize:fit:802/1*HT43fxrhT-H_5eRINTJrOg.png)
+![Screenshot 2024-08-11 090843](https://github.com/user-attachments/assets/d6e83a10-e46f-4d92-973c-1799b61808c5)
 
 * Click on Create for the user.
 
 * Click on the user and go to the security credentials section
 
-* Now we are going to create SSH credentials for this user.
+* Now we are going to create HTTP credentials for this user.
 
-* Go to the terminal and run this command
-
-```yaml
-ssh-keygen
-```
-
-* Keep all the default values.
-
-* Copy the public key using `cat ~/.ssh/id_rsa.pub`. Paste it into the security credentials, and SSH public key for the CodeCommit section, and copy the `SSH key id`.
-
-* Go back to the repository and copy the URL for the git connection.
-
-* Now run
+* Go to the terminal and run this command to copy the repository 
 
 ```yaml
-cd ~/.ssh 
-touch config
+git clone <HTTP URL>
 ```
-
-* Host git-codecommit.\*.amazonaws.com
-
-* User &lt;paste the id of ssh key (can find after you paster your key in aws )-&gt; IdentityFile `~/.ssh/id_rsa`
 
 * Now we can connect to this repo.
 
-* Run this command now
-
+* Run this command now for creating local Workspace
 ```yaml
-git clone <SSH URL>
+git init
+```
+* Run these command now for adding and commiting the files
+```yaml
+git add.
+git commit -m "<message>"
 ```
 
-* Now copy all the content from my git repository to your code commit repository.
+* Now We can copy all the content from our local  repository to your code commit repository.
 
 * And do a git push.
 
-![](https://miro.medium.com/v2/resize:fit:802/1*G9GM6z1zsy1Vu4l45RzdYA.png)
+![image](https://github.com/user-attachments/assets/c2641d17-2062-45ef-a4a0-27eb05ee42bd)
 
-![](https://miro.medium.com/v2/resize:fit:802/1*a71BaQJ9cqXhNu4qwNdo5g.png)
 
 # **Setting Up CodeBuild**
 
@@ -97,19 +79,28 @@ git clone <SSH URL>
 
 * Follow this steps
 
-![](https://miro.medium.com/v2/resize:fit:802/1*hF5pB28HSV3hK4BAnyyYpw.png)
+![Screenshot 2024-08-11 093227](https://github.com/user-attachments/assets/92fe82c6-204b-4e8c-9a0d-f5f90cb46715)
 
-![](https://miro.medium.com/v2/resize:fit:802/1*y3cQxzMHMprg4GSYFk_9Qg.png)
+![Screenshot 2024-08-11 093249](https://github.com/user-attachments/assets/62ddb881-c3a6-4c57-8dde-6ca187451c44)
 
-![](https://miro.medium.com/v2/resize:fit:802/1*y3cQxzMHMprg4GSYFk_9Qg.png)
+
+![Screenshot 2024-08-11 093314](https://github.com/user-attachments/assets/0c42d026-5400-431c-960f-4b1e451fbb45)
+
 
 * CodeBuild will need `buildspec.yml` to build a project.
+* Add 'buildspec.yml'file from local to the repository root folder
+
+  ![image](https://github.com/user-attachments/assets/ec53751c-d00a-4ae2-94b9-9f2aaa205985)
+
 
 * The `buildspec.yml` file is in the repository root folder.
+  ![image](https://github.com/user-attachments/assets/91f57c00-cdf1-4e8a-a665-449a74786f10)
+
+  ![Screenshot 2024-08-11 093347](https://github.com/user-attachments/assets/7bb0fecb-652e-42bd-b5c0-c4ab4ac6a3c6)
+
+
 
 * Also, This project will containerize so that select the `Enable this flag if you want to build Docker images or want your builds to get elevated privileges.`
-
-![](https://miro.medium.com/v2/resize:fit:802/1*WUg10Pj1em5re2Dj0BLLQQ.png)
 
 * In this project, we will build and push a Docker image to the DockerHub repository.
 
@@ -166,29 +157,27 @@ git clone <SSH URL>
         }
 ```
 
-![](https://miro.medium.com/v2/resize:fit:802/1*VfTQdzq_oG6sZY2_HeRj5A.png)
+![Screenshot 2024-08-11 100626](https://github.com/user-attachments/assets/e853758d-9396-49ed-8145-e617572f9fb3)
 
-![](https://miro.medium.com/v2/resize:fit:802/1*y51NsZiy-iXrHYYdPR7Q9Q.png)
+![image](https://github.com/user-attachments/assets/4d13bb49-a83b-45f0-99b0-c6247436b0cb)
 
-![](https://miro.medium.com/v2/resize:fit:802/1*aZbW27bLMPaADw65kU6V8Q.png)
-
-![](https://miro.medium.com/v2/resize:fit:802/1*KkPwQwzMIeWjVhND2YX8TA.png)
-
-![](https://miro.medium.com/v2/resize:fit:802/1*lib2KrSVn3kpOXrhoF_UcQ.png)
 
 # **DockerHub Repository**
 
-![](https://miro.medium.com/v2/resize:fit:802/1*YMxMt339Ovym9DYCTbV88w.png)
+![Screenshot 2024-08-11 104359](https://github.com/user-attachments/assets/d799497f-5b73-477d-884f-0a8b799015d1)
+
 
 * Just for Test
 
-* `Pull` this Docker Image is locally using `docker run -n netflix -p 8080:80 dhruvdarji123/netflix-react-app`
+* `Pull` this Docker Image is locally using `docker run -n netflix -p 8080:80 skywalkerdarth/netflix-react-app`
 
 ![](https://miro.medium.com/v2/resize:fit:802/1*84WPkjw5a1ddu8QS7Brx7g.png)
 
 # **Build Artifact store in S3 Bucket**
 
 In the CodeBuild console Click on Edit button -&gt; Artifacts -&gt; Type: “S3” -&gt; put Uplode Location.
+![Screenshot 2024-08-11 093610](https://github.com/user-attachments/assets/3ecf3078-044c-4315-bd94-ae67a7734536)
+
 
 # **Create CodeDeploy Application**
 
@@ -323,10 +312,3 @@ sudo service codedeploy-agent status
 
 ![](https://miro.medium.com/v2/resize:fit:1146/1*AXXMABbwjT5zFi5zibzP5A.png)
 
-# Thank you
-
-Thank you for taking the time to work on this tutorial/labs. Let me know what you thought!
-
-#### Author by [Harshhaa Reddy](https://github.com/NotHarshhaa)
-
-### Ensure to follow me on GitHub. Please star/share this repository
