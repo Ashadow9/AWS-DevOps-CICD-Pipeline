@@ -1,0 +1,31 @@
+version: 0.2
+
+env:
+  parameter-store:
+    USERNAME: /myapp/docker-credentials/username
+    PASSWORD: /myapp/docker-credentials/password
+    KEY:  /myapp/api/key
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: latest
+    commands:
+      - node --version
+      - echo "Installed node"
+  pre_build:
+    commands:
+      - npm install
+      - echo "Dependencies installed"
+  build:
+    commands:
+      - docker build . -t skywalkerdarth/netflix-react-app:latest --build-arg TMDB_V3_API_KEY=$KEY
+  post_build:
+    commands:
+      - echo "Waiting right now"
+      - docker login -u $USERNAME -p $PASSWORD
+      - docker push skywalkerdarth/netflix-react-app:latest
+artifacts:
+  files:
+    - '**/*'
+

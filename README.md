@@ -1,131 +1,159 @@
-# AWS-DevOps-CICD-Pipeline
+# AWS DevOps CICD Pipeline
 
-AWS DevOps CICD Pipeline
 In This Project, we are Developing and Deploying a video streaming application on EC2 using Docker and AWS Developers Tools.
 
-CodeCommit: For Source Code Management
+* `CodeCommit`: For Source Code Management
 
-CodeBuild: For building and testing our code in a serverless fashion
+* `CodeBuild`: For building and testing our code in a serverless fashion
 
-CodeDeploy: To deploy our code
+* `CodeDeploy`: To deploy our code
 
-CodePipeline: To streamline the CI/CD pipeline
+* `CodePipeline`: To streamline the CI/CD pipeline
 
-System Manager: To store Parameters
+* `System Manager`: To store Parameters
 
-DockerHub: To store Docker Images in a Repository
+* `DockerHub`: To store Docker Images in a Repository
 
-Identity and Access Management (IAM) for creating a Service Role
+* `Identity and Access Management` (IAM) for creating a Service Role
 
-S3 for artifact storing
+* `S3` for artifact storing
 
-EC2 for Deployment
+* `EC2` for Deployment
 
+Clone this Repository
 
-Project Architecture
-![image](https://github.com/user-attachments/assets/1f0a0e04-e73e-4507-9504-77d3ca8fb25b)
+```elixir
+git clone https://github.com/NotHarshhaa/DevOps-Projects.git
+```
 
+# **Project Architecture**
 
+![](https://miro.medium.com/v2/resize:fit:1431/1*9s2m5NLVfW-A3IbDRg3b1w.png)
 
-Setting Up CodeCommit
-Create a Repository
+# **Setting Up CodeCommit**
 
-![image](https://github.com/user-attachments/assets/a92256e8-d8a1-4fa7-bf28-d70575741fcf)
+* Create a Repository
 
-Create IAM User:
-Go to the IAM console and create a user.
+![](https://miro.medium.com/v2/resize:fit:802/1*9hontpTywG4GrV3p6xprYQ.png)
 
-Click on Create User -> User details -> Next.
+# **Create IAM User:**
 
-Add Permission for full access to CodeCommit.
-![image](https://github.com/user-attachments/assets/296fccbb-8d18-499e-88fa-ebbd35a648c9)
+* Go to the IAM console and create a user.
 
-Click on Create for the user.
+* Click on Create User -&gt; User details -&gt; Next.
 
-Click on the user and go to the security credentials section
+* Add Permission for full access to CodeCommit.
 
-Now we are going to create HTTPS Git credentials for AWS CodeCommit  for this user.
+![](https://miro.medium.com/v2/resize:fit:802/1*HT43fxrhT-H_5eRINTJrOg.png)
 
-Go to the terminal and run this command
+* Click on Create for the user.
 
- git clone and the http url
-Run this command now
+* Click on the user and go to the security credentials section
 
-Now we can connect to this repo.
+* Now we are going to create SSH credentials for this user.
 
-add the index.html file in the repository
+* Go to the terminal and run this command
 
-![image](https://github.com/user-attachments/assets/90d43cb7-f46f-4e3d-8381-43ddac5a411d)
+```yaml
+ssh-keygen
+```
 
-![image](https://github.com/user-attachments/assets/22151527-a185-4dbb-9162-4dcda8d0f806)
+* Keep all the default values.
 
-![image](https://github.com/user-attachments/assets/4cc9ed2b-00e1-47df-92f3-6c97dd5690d0)
+* Copy the public key using `cat ~/.ssh/id_rsa.pub`. Paste it into the security credentials, and SSH public key for the CodeCommit section, and copy the `SSH key id`.
 
+* Go back to the repository and copy the URL for the git connection.
 
-Setting Up CodeBuild
-Click on Create build project
+* Now run
 
-Follow this steps
+```yaml
+cd ~/.ssh 
+touch config
+```
 
-![image](https://github.com/user-attachments/assets/1fcd4bf0-efc6-417f-bf6f-69b681555d33)
+* Host git-codecommit.\*.amazonaws.com
 
-![image](https://github.com/user-attachments/assets/96ed1f8c-ec08-4e93-a742-850d44945ddd)
-![image](https://github.com/user-attachments/assets/8237f010-7a77-412b-ad03-a986259d0992)
-![image](https://github.com/user-attachments/assets/a2f4801b-5660-4e1f-84d5-9e133cebafea)
+* User &lt;paste the id of ssh key (can find after you paster your key in aws )-&gt; IdentityFile `~/.ssh/id_rsa`
 
-CodeBuild will need buildspec.yml to build a project.
+* Now we can connect to this repo.
 
-We neec to do add The buildspec.yml file  in the repository root folder.
+* Run this command now
 
-Also, This project will containerize so that select the Enable this flag if you want to build Docker images or want your builds to get elevated privileges.
+```yaml
+git clone <SSH URL>
+```
 
-![image](https://github.com/user-attachments/assets/20bac3e8-928c-44f3-8d30-9e581dde3f98)
+* Now copy all the content from my git repository to your code commit repository.
 
-In this project, we will build and push a Docker image to the DockerHub repository.
+* And do a git push.
 
-So, We need DockerHub credentials like Username and Password.
+![](https://miro.medium.com/v2/resize:fit:802/1*G9GM6z1zsy1Vu4l45RzdYA.png)
 
-Also, we are using a free API to consume movie/TV data in this Project. TMDB.
+![](https://miro.medium.com/v2/resize:fit:802/1*a71BaQJ9cqXhNu4qwNdo5g.png)
 
-Using AWS System Manager for storing secrets
-Goto AWS System Manager dashboard.
+# **Setting Up CodeBuild**
 
-Click on Parameter Store -> Create parameter
-![image](https://github.com/user-attachments/assets/f21ef0b2-f494-4e4f-9e1d-1c1ecdb0f054)
+* Click on `Create build project`
 
+* Follow this steps
 
-In Parameter details
+![](https://miro.medium.com/v2/resize:fit:802/1*hF5pB28HSV3hK4BAnyyYpw.png)
 
-Add DockerHub Username
+![](https://miro.medium.com/v2/resize:fit:802/1*y3cQxzMHMprg4GSYFk_9Qg.png)
 
-Name: /myapp/docker-credentials/username
+![](https://miro.medium.com/v2/resize:fit:802/1*y3cQxzMHMprg4GSYFk_9Qg.png)
 
-Type: SecureString
+* CodeBuild will need `buildspec.yml` to build a project.
 
-Value: Add Your DockerHub Username
+* The `buildspec.yml` file is in the repository root folder.
 
-Add DockerHub Password
+* Also, This project will containerize so that select the `Enable this flag if you want to build Docker images or want your builds to get elevated privileges.`
 
-Name: /myapp/docker-credentials/password
+![](https://miro.medium.com/v2/resize:fit:802/1*WUg10Pj1em5re2Dj0BLLQQ.png)
 
-Type: SecureString
+* In this project, we will build and push a Docker image to the DockerHub repository.
 
-Value: Add Your DockerHub Password or secret token
+* So, We need DockerHub credentials like `Username` and `Password`.
 
-Add TMDB API Key
+* Also, we are using a free API to consume movie/TV data in this Project. [TMDB](https://www.themoviedb.org/).
 
-Name: /myapp/api/key
+# **Using** `AWS System Manager` for storing secrets
 
-Type: SecureString
+* Goto `AWS System Manager` dashboard.
 
-Value: Add Your TMDB API key
-![image](https://github.com/user-attachments/assets/f6ccee5b-1b9a-4bc6-92eb-0e736838e68e)
+* Click on `Parameter Store` -&gt; `Create parameter`
 
+* In Parameter details
 
-Also, Add Permission in CodeBuild Created Role to assess Parameters from CodeBuild to System Manager
+***Add*** `DockerHub Username`
 
-For this, Create an inline policy.
+*Name:* `/myapp/docker-credentials/username`
 
+*Type:* `SecureString`
+
+*Value: Add Your DockerHub Username*
+
+***Add*** `DockerHub Password`
+
+*Name:* `/myapp/docker-credentials/password`
+
+*Type:* `SecureString`
+
+*Value: Add Your DockerHub Password or secret token*
+
+***Add*** `TMDB API Key`
+
+*Name:* `/myapp/api/key`
+
+*Type:* `SecureString`
+
+*Value: Add Your TMDB API key*
+
+* Also, Add Permission in CodeBuild Created Role to assess `Parameters from CodeBuild to System Manager`
+
+* For this, Create an inline policy.
+
+```yaml
 {
             "Sid": "Statement1",
             "Effect": "Allow",
@@ -136,174 +164,169 @@ For this, Create an inline policy.
                 "arn:aws:ssm:*:{AWS Account ID 12 Digit}:parameter/*"
             ]
         }
+```
 
-![image](https://github.com/user-attachments/assets/23972186-3f99-48b5-b6ed-acbf64e011eb)
+![](https://miro.medium.com/v2/resize:fit:802/1*VfTQdzq_oG6sZY2_HeRj5A.png)
 
+![](https://miro.medium.com/v2/resize:fit:802/1*y51NsZiy-iXrHYYdPR7Q9Q.png)
 
+![](https://miro.medium.com/v2/resize:fit:802/1*aZbW27bLMPaADw65kU6V8Q.png)
 
+![](https://miro.medium.com/v2/resize:fit:802/1*KkPwQwzMIeWjVhND2YX8TA.png)
 
+![](https://miro.medium.com/v2/resize:fit:802/1*lib2KrSVn3kpOXrhoF_UcQ.png)
 
+# **DockerHub Repository**
 
+![](https://miro.medium.com/v2/resize:fit:802/1*YMxMt339Ovym9DYCTbV88w.png)
 
+* Just for Test
 
+* `Pull` this Docker Image is locally using `docker run -n netflix -p 8080:80 dhruvdarji123/netflix-react-app`
 
-DockerHub Repository
-![image](https://github.com/user-attachments/assets/f3d57b04-fd5e-4a36-ab7d-e3d844abc006)
+![](https://miro.medium.com/v2/resize:fit:802/1*84WPkjw5a1ddu8QS7Brx7g.png)
 
+# **Build Artifact store in S3 Bucket**
 
+In the CodeBuild console Click on Edit button -&gt; Artifacts -&gt; Type: “S3” -&gt; put Uplode Location.
 
-Just for Test
+# **Create CodeDeploy Application**
 
-Pull this Docker Image is locally using docker run -n netflix -p 8080:80 skywalkerdarth/netflix-react-app
+* Create Application and Compute platform is EC2/On-premises
 
-![image](https://github.com/user-attachments/assets/40ea89e4-98ff-46f8-9056-8ac6b29ed09b)
-
-
-Build Artifact store in S3 Bucket
-In the CodeBuild console Click on Edit button -> Artifacts -> Type: “S3” -> put Uplode Location.
-![image](https://github.com/user-attachments/assets/9aa8da2e-0df6-4284-870e-3dd82493e404)
-
-Create CodeDeploy Application
-Create Application and Compute platform is EC2/On-premises
 Create Service role (Give permissions -
 
-1.AmazonEC2FullAccess
+1.`AmazonEC2FullAccess`
 
-2.AmazonEC2RoleforAWSCodeDeploy
+2.`AmazonEC2RoleforAWSCodeDeploy`
 
-3. AmazonS3FullAccess
+3\. `AmazonS3FullAccess`
 
-4.AWSCodeDeployeFullAccess
+4.`AWSCodeDeployeFullAccess`
 
-5.AWSCodeDeployRole
+5.`AWSCodeDeployRole`
 
-6.AmazonEC2RoleforAWSCodeDeployLimitaccesstoS3
+6.`AmazonEC2RoleforAWSCodeDeployLimitaccesstoS3`
 
+![](https://miro.medium.com/v2/resize:fit:802/1*Qy8myUrKBs2Mdz3zcYarnw.png)
 
+# **Create EC2 instance**
 
-Create EC2 instance
 Click Launch Instances
 
-Amazon Linux -> t2.micro
+* `Amazon Linux` -&gt; `t2.micro`
 
-Also, Create a Service Role for EC2 to access s3 & CodeDeploy
+* Also, Create a Service Role for `EC2 to access s3 & CodeDeploy`
 
-Goto IAM Dashboard -> Create Role -> Service Role -> EC2
+* Goto IAM Dashboard -&gt; Create Role -&gt; Service Role -&gt; EC2
 
-Add this permission
+* Add this permission
 
-AmazonEC2FullAccess
+1. `AmazonEC2FullAccess`
 
-AmazonEC2RoleforAWSCodeDeploy
+2. `AmazonEC2RoleforAWSCodeDeploy`
 
-AmazonS3FullAccess
+3. `AmazonS3FullAccess`
 
-AWSCodeDeployFullAccess
+4. `AWSCodeDeployFullAccess`
 
+![](https://miro.medium.com/v2/resize:fit:516/1*UeYfAPx9TUTD-al36pMn5w.png)
 
+* Give Role name -&gt; Click on Create Role
 
-Give Role name -> Click on Create Role
+![](https://miro.medium.com/v2/resize:fit:802/1*UgsSUsPQB-IlWMeE7KTi0g.png)
 
+* Give This Service Role here.
 
-Give This Service Role here.
+![](https://miro.medium.com/v2/resize:fit:802/1*IeX4BlMt9mAcCEP0SjNQ4Q.png)
 
+![](https://miro.medium.com/v2/resize:fit:802/1*whbDYJoPyKt5jvg_TKDq2w.png)
 
-Add this Script to the User Data section.
+* Add this Script to the User Data section.
 
-Or Just run it manually.
+* Or Just run it manually.
 
-For Amazon Linux
+* For `Amazon Linux`
 
-
+```yaml
 #!/bin/bash
-
 sudo yum -y update
-
 sudo yum install -y docker
-
 sudo service docker start
-
 sudo usermod -aG docker ec2-user
-
 sudo yum -y install ruby
-
 sudo yum -y install wget
-
 cd /home/ec2-user
-
 wget https://aws-codedeploy-ap-south-1.s3.ap-south-1.amazonaws.com/latest/install
-
 sudo chmod +x ./install
-
 sudo ./install auto
+```
 
-For Ubuntu
+* For `Ubuntu`
 
-
+```yaml
 #!/bin/bash
-
-
 sudo apt update
-
 sudo install docker.io
-
 sudo apt install ruby-full
-
 wget cd /home/ubuntu wget https://aws-codedeploy-ap-south-1.s3.ap-south-1.amazonaws.com/latest/install
-
 chmod +x ./install
-
 sudo ./install auto
-
 sudo service codedeploy-agent status
+```
 
+![](https://miro.medium.com/v2/resize:fit:802/1*M_gK-QozKKhGF2a69sqr-Q.png)
 
+# **Create CodeDeploy Group**
 
-Create CodeDeploy Group
-Create a CodeDeploy Group using the following Steps.
+* Create a CodeDeploy Group using the following Steps.
 
-![image](https://github.com/user-attachments/assets/904d2dad-8af7-4345-8227-c2e27b85ab34)
+![](https://miro.medium.com/v2/resize:fit:802/1*qCR1ss5LljksU-eQU0SE3Q.png)
 
+![](https://miro.medium.com/v2/resize:fit:802/1*NV8AWUIRLZn4Hh8RkthZ-A.png)
 
-![image](https://github.com/user-attachments/assets/861927f9-4b16-4c3b-86f0-1a8f90a7d039)
+* Click On `Create Deployment`
 
-Click On Create Deployment
+* `Start Deployment`
 
-Start Deployment
+![](https://miro.medium.com/v2/resize:fit:802/1*S9LeQEpcYgRHpSOTDkk_Qw.png)
 
-![image](https://github.com/user-attachments/assets/e910807d-90ff-4889-a71b-3c1b4d0605af)
+# **Create CodePipeline**
 
+* Step 1: Choose pipeline setting -&gt; PipelineName &gt; Service role
 
-Create CodePipeline
-Step 1: Choose pipeline setting -> PipelineName > Service role
+* Step 2: Add source stage -&gt; CodeCommit &gt; RepoName &gt; BranchName &gt; Select CodePipeline periodically for changes(For automation)
 
-Step 2: Add source stage -> CodeCommit > RepoName > BranchName > Select CodePipeline periodically for changes(For automation)
+* Step 3: Add build stage -&gt; BuildProvider &gt; Region &gt; ProjectName &gt; Single build
 
-Step 3: Add build stage -> BuildProvider > Region > ProjectName > Single build
+* Step 4: Add deploy stage -&gt; DeployProvider &gt; Region &gt; AppName &gt; Deployment group
 
-Step 4: Add deploy stage -> DeployProvider > Region > AppName > Deployment group
+* Step 5: Review
 
-Step 5: Review
+![](https://miro.medium.com/v2/resize:fit:802/1*QeQ1src8x9U7AkoFMybm6g.png)
 
-![image](https://github.com/user-attachments/assets/82a7eaec-026f-4c26-a081-b9ba6c95ebc0)
+![](https://miro.medium.com/v2/resize:fit:802/1*wzOqHTKYqQhnVW8_pxHu8g.png)
 
+# **CodeBuild History**
 
-![image](https://github.com/user-attachments/assets/9791861c-3681-4a32-ad04-b3d8af252735)
+![](https://miro.medium.com/v2/resize:fit:802/1*v2g91Zb-6MrxGLpHUaEmWw.png)
 
+**CodeDeploy**
 
-CodeBuild History
-![image](https://github.com/user-attachments/assets/2a8c62a8-7611-4e26-a011-35bb1c5cb7d5)
+![](https://miro.medium.com/v2/resize:fit:802/1*mjRCZCpzUQiTOGN4ZwpoIg.png)
 
+# **CodeDeploy History**
 
-CodeDeploy
+![](https://miro.medium.com/v2/resize:fit:802/1*Rv0iMnCaXH4xl5tDKGmDSQ.png)
 
-![image](https://github.com/user-attachments/assets/eae15fb6-a1ca-4db5-84a6-a073bcf996ae)
+# **Output**
 
+![](https://miro.medium.com/v2/resize:fit:1146/1*AXXMABbwjT5zFi5zibzP5A.png)
 
-CodeDeploy History
+# Thank you
 
-![image](https://github.com/user-attachments/assets/7a8946e1-7a9b-423f-a1ea-6cc2809a6f6c)
+Thank you for taking the time to work on this tutorial/labs. Let me know what you thought!
 
-Output
-![image](https://github.com/user-attachments/assets/86f9d8e3-3671-4ff9-b1e5-56dff921c9a1)
+#### Author by [Harshhaa Reddy](https://github.com/NotHarshhaa)
 
+### Ensure to follow me on GitHub. Please star/share this repository
